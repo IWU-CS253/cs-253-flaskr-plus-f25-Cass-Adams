@@ -80,3 +80,11 @@ def add_entry():
     db.commit()
     flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
+
+@app.route('/filter', methods=['POST'])
+def filter_entries():
+    db = get_db()
+    search = request.form['category']
+    cur = db.execute(f'select title, category, text from entries where category="{search}" order by id desc')
+    entries = cur.fetchall()
+    return render_template("show_entries.html", entries=entries)
