@@ -88,3 +88,14 @@ def filter_entries():
     cur = db.execute(f'select title, category, text from entries where category="{search}" order by id desc')
     entries = cur.fetchall()
     return render_template("show_entries.html", entries=entries)
+
+@app.route('/delete', methods=['POST'])
+def delete_entry():
+    db = get_db()
+    id_to_delete = request.form["delete_button"]
+    db.execute(f'delete from entries where text="{id_to_delete}"')
+    db.commit()
+    flash('Entry was successfully deleted')
+    cur = db.execute('select title, category, text from entries order by id desc')
+    entries = cur.fetchall()
+    return render_template("show_entries.html", entries=entries)
