@@ -99,3 +99,23 @@ def delete_entry():
     cur = db.execute('select title, category, text from entries order by id desc')
     entries = cur.fetchall()
     return render_template("show_entries.html", entries=entries)
+
+@app.route('/edit', methods=['POST'])
+def edit_entry():
+    db = get_db()
+    id_to_edit = request.form["edit_button"]
+    entry= db.execute(f"select title, category, text from entries where text = '{id_to_edit}'")
+    entry = entry.fetchone()
+    return render_template("edit.html", entry=entry)
+
+@app.route('/finish_edit', methods=['POST'])
+def finish_edit():
+    db = get_db()
+    title = request.form['title']
+    category = request.form['category']
+    text = request.form['text']
+    old_text = request.form['old_text']
+    db.execute(f"update entries set title='{title}', category='{category}', text='{text}' where text={old_text}")
+    db.commit()
+    flash('Entry was successfully edited')
+    return redirect(url_for('show_entries'))

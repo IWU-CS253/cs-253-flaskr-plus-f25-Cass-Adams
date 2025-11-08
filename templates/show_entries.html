@@ -32,6 +32,7 @@
   <ul class="entries">
   {% for entry in entries %}
       <form action="{{ url_for('delete_entry') }}" method="post" class="delete_entry"><button type="submit" name="delete_button" value="{{ entry.text }}">Delete</button></form>
+      <form action="{{ url_for('edit_entry') }}" method="post" class="edit_entry"><button type="submit" name="edit_button" value="{{ entry.text }}">Edit</button></form>
     <li><h2>{{ entry.title }}</h2><h3>{{ entry.category }}</h3>{{ entry.text|safe }}</li>
   {% else %}
     <li><em>Unbelievable.  No entries here so far</em></li>
