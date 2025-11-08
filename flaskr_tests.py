@@ -31,5 +31,48 @@ class FlaskrTestCase(unittest.TestCase):
         assert b'<strong>HTML</strong> allowed here' in rv.data
         assert b'A category' in rv.data
 
+    def test_delete(self):
+        self.app.post('/add', data=dict(
+            title='<Hello>',
+            text='<strong>HTML</strong> allowed here',
+            category='A category'
+        ), follow_redirects=True)
+        rv = self.app.post('/delete', data=dict(
+            title='<Hello>',
+            text='<strong>HTML</strong> allowed here',
+            category = 'A category'
+        ), follow_redirects=True)
+        assert b'<strong>HTML</strong> allowed here' not in rv.data
+
+    def test_edit(self):
+        self.app.post('/add', data=dict(
+            title='<Hello>',
+            text='<strong>HTML</strong> allowed here',
+            category='A category'
+        ), follow_redirects=True)
+        rv = self.app.post('/edit', data=dict(
+            title='<Hello>',
+            text='hi',
+            category = 'A category'
+        ), follow_redirects=True)
+        assert b'hi' in rv.data
+
+    def test_filter(self):
+        self.app.post('/add', data=dict(
+            title='<Hello>',
+            text='<strong>HTML</strong> allowed here',
+            category='A category'
+        ), follow_redirects=True)
+        self.app.post('/add', data=dict(
+            title='test',
+            text='checking for this',
+            category='check'
+        ), follow_redirects=True)
+        rv = self.app.post('/filter', data=dict(
+            category = 'check'
+        ), follow_redirects=True)
+        assert b'<strong>HTML</strong> allowed here' not in rv.data
+        assert b'check' in rv.data
+
 if __name__ == '__main__':
     unittest.main()
