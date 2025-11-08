@@ -1,17 +1,25 @@
 {% extends "layout.html" %}
 {% block body %}
+    <div class="container col-sm">
   <form action="{{ url_for('finish_edit') }}" method="post" class="add-entry">
 
     <dl>
-      <dt>Title:
-      <dd><input type="text" size="30" name="title" value="{{ entry.title }}">
-      <dt>Category:
-      <dd><input type="text" size="30" name="category" value="{{ entry.category }}">
-      <dt>Text:
-      <dd><textarea name="text" rows="5" cols="40">{{ entry.text }}</textarea>
+        <div class="mb-3">
+      <dt class="form-label">Title:
+            <dd><input type="text" size="30" name="title" value="{{ entry.title }}" class="form-control"></dd>
+        </div>
+            <div class="mb-3">
+      <dt class="form-label">Category:
+                <dd><input type="text" size="30" name="category" value="{{ entry.category }}" class="form-control"></dd>
+            </div>
+        <div class="mb-3">
+      <dt class="form-label">Text:
+            <dd><textarea name="text" rows="5" cols="40" class="form-control">{{ entry.text }}</textarea></dd>
+        </div>
         <input type="text" size="30" name="old_text" value="{{ entry.text }}" hidden>
-      <dd><input type="submit" value="Finish Edit">
+        <dd><input type="submit" value="Finish Edit" class="btn btn-primary"></dd>
     </dl>
   </form>
+    </div>
 
 {% endblock %}
